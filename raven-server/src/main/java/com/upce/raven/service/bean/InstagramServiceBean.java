@@ -1,6 +1,5 @@
 package com.upce.raven.service.bean;
 
-import com.github.instagram4j.instagram4j.exceptions.*;
 import com.upce.raven.constant.*;
 import com.upce.raven.dao.*;
 import com.upce.raven.dto.*;
@@ -33,7 +32,7 @@ public class InstagramServiceBean implements InstagramService {
     private RavenUserDAO ravenUserDAO;
 
     @Override
-    public void getPostDetail(String url, String ravenUsername) throws IGLoginException, ExecutionException, InterruptedException {
+    public void getPostDetail(String url, String ravenUsername) throws ExecutionException, InterruptedException {
         var shortcode = url.split("/p/")[1].split("/")[0];
         var vars = new JSONObject();
         vars.put("shortcode", shortcode);
@@ -98,6 +97,7 @@ public class InstagramServiceBean implements InstagramService {
         dto.setNumberOfCommentsTotal(instagramPost.getNumOfComments());
         dto.setNumOfLikesTotal(instagramPost.getNumOfLikes());
         dto.setPostTimelineDTOS(new ArrayList<PostTimelineDTO>());
+        dto.setPostTimelineCommentsDTOS(new ArrayList<PostTimelineCommentsDTO>());
         dto.setImageUrl(instagramPost.getImageUrl());
 
         for (InstagramPost ig : instagramPosts) {
@@ -105,6 +105,13 @@ public class InstagramServiceBean implements InstagramService {
             timelineDTO.setDatetime(ig.getCreatedAt());
             timelineDTO.setNumOfLikes(ig.getNumOfLikes());
             dto.getPostTimelineDTOS().add(timelineDTO);
+        }
+
+        for (InstagramPost ig : instagramPosts) {
+            PostTimelineCommentsDTO timelineDTO = new PostTimelineCommentsDTO();
+            timelineDTO.setDatetime(ig.getCreatedAt());
+            timelineDTO.setNumOfComments(ig.getNumOfComments());
+            dto.getPostTimelineCommentsDTOS().add(timelineDTO);
         }
 
         return dto;

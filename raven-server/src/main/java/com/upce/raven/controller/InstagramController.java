@@ -1,6 +1,5 @@
 package com.upce.raven.controller;
 
-import com.github.instagram4j.instagram4j.exceptions.*;
 import com.upce.raven.dto.*;
 import com.upce.raven.service.*;
 import com.upce.raven.util.*;
@@ -24,8 +23,6 @@ public class InstagramController {
     ResponseEntity getPostDetail(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "ig-url") String igUrl, @RequestParam(name = "username") String username) {
         try {
             instagramService.getPostDetail(igUrl, username);
-        } catch (IGLoginException e) {
-            throw new RuntimeException(e);
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {

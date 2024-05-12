@@ -18,5 +18,6 @@ public class CombinedPostDetailsDTO {
     private String posterUsername;
     private String imageUrl;
     List<PostTimelineDTO> postTimelineDTOS;
+    List<PostTimelineCommentsDTO> postTimelineCommentsDTOS;
 
 }

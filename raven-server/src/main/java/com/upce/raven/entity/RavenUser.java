@@ -1,6 +1,5 @@
 package com.upce.raven.entity;
 
-import com.github.instagram4j.instagram4j.requests.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

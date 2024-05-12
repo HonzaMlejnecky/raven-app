@@ -2,58 +2,31 @@ import '../../index-out.css'
 import React from 'react'
 import './graph.css'
 
-import { Line } from 'react-chartjs-2';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 
-function Graph() {
+function Graph(props: {data: []}) {
 
-    const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [
-          {
-            label: 'My First dataset',
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: 'rgba(75,192,192,1)',
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40]
-          }
-        ]
-      };
+    const data2: [] = props.data;
+    console.log(data2)
 
-    return (
-        <div className='graph-container'>
-            <div className='graph-wrapper'>
-                <h1>Přehled v čase</h1>
-                <Line className='graph'
-                    options={{
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            },
-                            x: {
-                                beginAtZero: true
-                            }
-                        
-                    }}}
-                   
-                />
-            </div>
-        </div>
-    )
+
+    return <>
+
+        <LineChart width={1100} height={250} data={data2}
+            margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="datetime" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="numOfLikes" stroke="green" />
+            <Line type="monotone" dataKey="numOfComments" stroke="blue" />
+        </LineChart>
+        <p>
+            Graph of the number of likes and comments
+        </p>
+    </>
 }
 
 export default Graph

@@ -1,0 +1,14 @@
+.igpost-card  {
+    grid-row: 2 / 3;
+    grid-column: 3 ;
+    background-color: white;
+}
+
+.igpost-card  .actual-post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  
+}
