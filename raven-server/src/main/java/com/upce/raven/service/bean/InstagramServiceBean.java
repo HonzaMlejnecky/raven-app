@@ -117,6 +117,27 @@ public class InstagramServiceBean implements InstagramService {
         return dto;
     }
 
+    @Override
+    public UserTrackedPostsDTO getUserTrackedPosts(String username) {
+        List<String> instagramPostShortcodes = instagramPostDAO.getUserTrackedPosts(username);
+        UserTrackedPostsDTO userTrackedPostsDTO = new UserTrackedPostsDTO();
+        userTrackedPostsDTO.setUsername(username);
+        userTrackedPostsDTO.setPostShortDTOs(new ArrayList<>());
+        for (String instagramShortcode : instagramPostShortcodes) {
+            InstagramPost instagramPost = instagramPostDAO.getPostDetails(instagramShortcode);
+
+            PostShortDTO postShortDTO = new PostShortDTO();
+            postShortDTO.setPosterUsername(instagramPost.getPosterUsername());
+            postShortDTO.setDescription(instagramPost.getDescription());
+            postShortDTO.setNumberOfLikes(instagramPost.getNumOfLikes());
+            postShortDTO.setShortcode(instagramPost.getShortcode());
+
+            userTrackedPostsDTO.getPostShortDTOs().add(postShortDTO);
+        }
+
+        return userTrackedPostsDTO;
+    }
+
     private Response callIG(Request request, @Nullable Object info) throws IOException {
         var res = client.newCall(request).execute();
         if (res.isSuccessful()){

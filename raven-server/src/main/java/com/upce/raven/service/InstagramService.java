@@ -9,4 +9,6 @@ public interface InstagramService {
     void getPostDetail(String url, String ravenUsername) throws ExecutionException, InterruptedException;
     CombinedPostDetailsDTO getCombinedSavedPostDetail(String url);
 
+    UserTrackedPostsDTO getUserTrackedPosts(String username);
+
 }

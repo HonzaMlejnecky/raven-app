@@ -16,4 +16,6 @@ public interface InstagramPostDAO  {
 
     List<InstagramPost> getPostsTimeline(String igPostId);
 
+    List<String> getUserTrackedPosts(String username);
+
 }

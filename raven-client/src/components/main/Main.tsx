@@ -7,9 +7,10 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import './main.css'
 import IgPostCard from '../ig-post-card/IgPostCard'
+import React from 'react'
 
 
-function Main() {
+function Main(props: { selectedPost: string }) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState({} as any);
@@ -18,7 +19,7 @@ function Main() {
 
   // obtain data from the server
   useEffect(() => {
-    axios.post('http://localhost:8080/ig/?ig-shortcode=C6W0p8Art0q', {}, {
+    axios.post(`http://localhost:8080/ig/?ig-shortcode=${props.selectedPost}`, {}, {
       headers: { Authorization: 'Bearer ' + Cookies.get('token') }
     })
       .then(res => {
@@ -31,7 +32,7 @@ function Main() {
         console.log(err)
       })
 
-  }, [])
+  }, [props.selectedPost])
 
   const combineData = (): object[] => {
     const combinedData: object[] = [] as object[];
@@ -74,7 +75,7 @@ function Main() {
           <Card className="element-3" title={"Number of obtained updates"} value={timelineData.length} />
           <Card className="element-4" title={"Last updated at"} value={convertDate(Date.parse(data.createdAt))} />
           <Card className="element-5" title={"Posted by"} value={data.posterUsername} />
-          <IgPostCard />
+          <IgPostCard shortcode={props.selectedPost} />
         </div>
       </div>
 

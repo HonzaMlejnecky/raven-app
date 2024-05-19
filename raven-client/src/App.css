@@ -15,3 +15,50 @@
 .read-the-docs {
   color: #888;
 }
+
+.pop-up {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000c8;
+  border: 1px solid #e9ecef;
+  border-radius: 0.25rem;
+  padding: 1em;
+}
+
+.pop-up-content {
+  background-color: white;
+  border-radius: 0.25rem;
+  padding: 1em;
+  width: 40vw;
+  height: 30vh;
+  margin: 10vh auto;
+}
+
+.pop-up-content h1 {
+  margin-bottom: 1em;
+  text-align: center;
+  font-size: 30px;
+}
+
+.pop-up-content input {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  border: 2px solid #555555;
+  border-radius: 0.9rem;
+}
+
+.pop-up-content button {
+  display: block;
+  padding: 0.5em 1em;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.9rem;
+  margin: 0 auto;
+}

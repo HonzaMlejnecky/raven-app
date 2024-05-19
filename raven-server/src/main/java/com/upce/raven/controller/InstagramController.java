@@ -20,7 +20,7 @@ public class InstagramController {
     private JwtUtil jwtUtil;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    ResponseEntity getPostDetail(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "ig-url") String igUrl, @RequestParam(name = "username") String username) {
+    ResponseEntity getPostDetail(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "ig-url") String igUrl, @RequestParam(name = "username") String username) {
         try {
             instagramService.getPostDetail(igUrl, username);
         } catch (ExecutionException e) {
@@ -32,10 +32,17 @@ public class InstagramController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    ResponseEntity getCombinedDetailsOfPost(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "ig-shortcode") String igShortcode) {
+    ResponseEntity getCombinedDetailsOfPost(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "ig-shortcode") String igShortcode) {
         CombinedPostDetailsDTO data = instagramService.getCombinedSavedPostDetail(igShortcode);
 
         return ResponseEntity.ok().body(data);
+    }
+
+    @RequestMapping(value = "/get-tracked-posts", method = RequestMethod.GET)
+    ResponseEntity getUniquePostsForUser(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "username") String username) {
+        UserTrackedPostsDTO dto = instagramService.getUserTrackedPosts(username);
+
+        return ResponseEntity.ok().body(dto);
     }
 
     @RequestMapping(value = "/health", method = RequestMethod.GET)

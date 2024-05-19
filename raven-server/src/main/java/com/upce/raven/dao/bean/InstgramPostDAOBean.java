@@ -58,4 +58,16 @@ public class InstgramPostDAOBean extends GenericDAOBean<InstagramPost, Long> imp
 
         return query.getResultList();
     }
+
+    @Override
+    @Transactional
+    public List<String> getUserTrackedPosts(String username) {
+        String hql = "SELECT DISTINCT ig.shortcode FROM InstagramPost ig" +
+                " INNER JOIN ig.ravenUser user " +
+                " WHERE user.username = :username";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("username", username);
+
+        return query.getResultList();
+    }
 }
