@@ -12,21 +12,40 @@ function App() {
 
   const [loggedIn, setLoggedIn] = useState(false)
   const [selectedPost, setSelectedPost] = useState('' as string)
+  const [trackedPosts, setTrackedPosts] = useState({} as any);
   const [isHidden, setIsHidden] = useState(true);
 
   const trackNewPostPopUp = () => {
     setIsHidden(false);
   }
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === 'new-post') {
-      trackNewPostPopUp();
-      return;
-    }
+  const cancelPopUp = () => {
+    setIsHidden(true);
+  }
 
-    console.log('app ' + e.target.value)
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPost(e.target.value);
     Cookies.set('instagramShortcode', e.target.value);
+  }
+
+  const updateSelectedPost = () => {
+    const username = Cookies.get('username');
+    axios.get(`http://localhost:8080/ig/?ig-url=/p/${Cookies.get("instagramShortcode")}&username=${username}`, {
+      headers: { Authorization: 'Bearer ' + Cookies.get('token') }
+    }).then(response => {
+      axios.get('http://localhost:8080/ig/get-tracked-posts?', {
+        headers: { Authorization: 'Bearer ' + Cookies.get('token') },
+        params: {
+          username: Cookies.get('username')
+        }
+      }).then(res => {
+        setTrackedPosts(res.data)
+      }).catch(err => {
+        console.log(err)
+      });
+    }).catch(err => {
+      console.log(err)
+    });
   }
 
   const handleTrackNewPost = () => {
@@ -51,12 +70,30 @@ function App() {
       setLoggedIn(false)
     }
 
+
+    axios.get('http://localhost:8080/ig/get-tracked-posts?', {
+      headers: { Authorization: 'Bearer ' + Cookies.get('token') },
+      params: {
+        username: Cookies.get('username')
+      }
+    }).then(res => {
+      console.log(res.data)
+      setTrackedPosts(res.data)
+    }).catch(err => {
+      console.log(err)
+    });
+
+    if (!trackedPosts) {
+      trackNewPostPopUp();
+    }
+
+
   }, [])
 
 
   return (
     <>
-      <Navbar selectBoxFunc={handleSelectChange} />
+      <Navbar updatePostFunc={updateSelectedPost} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
       {loggedIn ?
         <>
           <div className={isHidden ? 'pop-up hidden' : 'pop-up'}>
@@ -64,7 +101,10 @@ function App() {
               <h1>Track a new post</h1>
               <input type='text' placeholder='Enter the Instagram URL' />
               <br />
-              <button onClick={handleTrackNewPost}>Track</button>
+              <div className='button-wrapper'>
+                <button onClick={handleTrackNewPost}>Track</button>
+                <button className='cancel-button' onClick={cancelPopUp}>Cancel</button>
+              </div>
             </div>
           </div>
           <Main selectedPost={selectedPost} />

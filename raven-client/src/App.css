@@ -60,5 +60,23 @@
   color: white;
   border: none;
   border-radius: 0.9rem;
+}
+
+.pop-up-content .cancel-button {
+  display: block;
+  padding: 0.5em 1em;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 0.9rem;
+  margin-left: 3em;
+}
+
+.button-wrapper {
+  width: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  justify-content: space-around;  
   margin: 0 auto;
 }

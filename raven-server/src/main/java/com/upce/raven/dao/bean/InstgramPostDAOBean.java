@@ -45,7 +45,11 @@ public class InstgramPostDAOBean extends GenericDAOBean<InstagramPost, Long> imp
         query.setParameter("igPostShortcode", igPostId);
         query.setMaxResults(1);
 
-        return (InstagramPost) query.getSingleResult();
+        try {
+            return (InstagramPost) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

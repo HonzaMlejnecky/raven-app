@@ -2,6 +2,8 @@
     grid-row: 2 / 3;
     grid-column: 3 ;
     background-color: white;
+    margin: 0 auto;
+    width: 615px;
 }
 
 .igpost-card  .actual-post {
@@ -9,6 +11,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 335px;
+    height: 545px;
+    border: 1px solid black ;
+}
 
-  
+.instagram-media {
+    border: 0px solid black !important;
+}
+
+._aa4c {
+    
 }

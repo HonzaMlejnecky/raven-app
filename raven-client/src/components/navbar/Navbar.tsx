@@ -2,12 +2,13 @@ import '../../index-out.css'
 import React, { useEffect } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios';
-
+import './navbar.css'
 
 function Navbar(props) {
 
     const [username, setUsername] = React.useState(Cookies.get('username'));
     const [trackedPosts, setTrackedPosts] = React.useState({} as any);
+    const [selectedPost, setSelectedPost] = React.useState('' as string);
 
     const handleLogout = () => {
         Cookies.remove('token');
@@ -30,7 +31,11 @@ function Navbar(props) {
             console.log(err)
         });
 
+        setSelectedPost(props.selectedPost);
+        console.log('navbar ' + props.selectedPost)
+
     }, [username])
+
 
 
     return (
@@ -52,23 +57,34 @@ function Navbar(props) {
                 <div>
                     {
                         username ?
-                        <div>
-                         <select onChange={props.selectBoxFunc}>
-                            {
-                                trackedPosts.postShortDTOs &&
-                                trackedPosts.postShortDTOs.map((post: { posterUsername: string, shortcode: string, description: string }) => {
-                                    return <option key={post.shortcode} value={post.shortcode}>{post.posterUsername}</option>
-                                })
-                            }
-                            <option value={'new-post'} onClick={() => {
-                                console.log('add new post')
-                            }}>
-                                Add new post to track
-                            </option>
-                         </select>
-                        </div>
-                        : <></>
+                            <div>
+                                <select className='selectbox' onChange={props.selectBoxFunc}>
+                                    {
+                                        trackedPosts.postShortDTOs &&
+                                        trackedPosts.postShortDTOs.map((post: { posterUsername: string, shortcode: string, description: string }) => {
+                                            return <option key={post.shortcode} value={post.shortcode}>{post.posterUsername}</option>
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            : <></>
                     }
+                </div>
+                <div>
+                    {
+                        username ? <button onClick={props.updatePostFunc} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full">
+                            Update Post
+                        </button> : <></>
+                    }
+
+                </div>
+                <div>
+                    {
+                        username ? <button onClick={props.trackNewPost} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full">
+                            Track New Post
+                        </button> : <></>
+                    }
+
                 </div>
                 <div className="pr-16 md:block hidden">
                     <a href="/manual" className="p-8">User Manual</a>
