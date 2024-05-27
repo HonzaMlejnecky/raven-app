@@ -86,10 +86,7 @@ function Navbar(props) {
                     }
 
                 </div>
-                <div className="pr-16 md:block hidden">
-                    <a href="/manual" className="p-8">User Manual</a>
-                    <a href="/about" className="p-8">About</a>
-                </div>
+                <div></div>
             </div>
         </nav>
     )
