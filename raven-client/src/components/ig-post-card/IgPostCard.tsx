@@ -10,12 +10,7 @@ function IgPostCard(props: { shortcode: string }) {
     const [reload, setReload] = React.useState(true);
 
     useEffect(() => {
-        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-        console.log(reload)
         setReload(!reload);
-        console.log(props.shortcode)
-        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
     }, [props.shortcode])
 
     return <>
