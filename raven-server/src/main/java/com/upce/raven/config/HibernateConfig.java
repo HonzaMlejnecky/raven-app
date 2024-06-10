@@ -28,7 +28,7 @@ public class HibernateConfig {
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/raven_db");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/raven_db_solid");
         dataSource.setUsername("postgres");
         dataSource.setPassword("root");
 
