@@ -18,7 +18,6 @@ function Navbar(props) {
     }
 
     useEffect(() => {
-
         axios.get('http://localhost:8080/ig/get-tracked-posts?', {
             headers: { Authorization: 'Bearer ' + Cookies.get('token') },
             params: {

@@ -53,6 +53,8 @@ html,
   font-variation-settings: normal;
   /* 6 */
   -webkit-tap-highlight-color: transparent;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
   /* 7 */
 }
 

@@ -14,6 +14,7 @@ function App() {
   const [selectedPost, setSelectedPost] = useState('' as string)
   const [trackedPosts, setTrackedPosts] = useState({} as any);
   const [isHidden, setIsHidden] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const trackNewPostPopUp = () => {
     setIsHidden(false);
@@ -30,6 +31,7 @@ function App() {
 
   const updateSelectedPost = () => {
     const username = Cookies.get('username');
+    setIsLoading(true);
     axios.get(`http://localhost:8080/ig/?ig-url=/p/${Cookies.get("instagramShortcode")}&username=${username}`, {
       headers: { Authorization: 'Bearer ' + Cookies.get('token') }
     }).then(response => {
@@ -40,26 +42,31 @@ function App() {
         }
       }).then(res => {
         setTrackedPosts(res.data)
+        setIsLoading(false);
       }).catch(err => {
         console.log(err)
+        setIsLoading(false);
       });
     }).catch(err => {
       console.log(err)
+      setIsLoading(false);
     });
   }
 
   const handleTrackNewPost = () => {
-    //http://localhost:8080/ig/?ig-url=https://www.instagram.com/p/C6W0p8Art0q/&username=carodej2
     setIsHidden(true);
+    setIsLoading(true);
     const input = document.querySelector('input');
     const url = input?.value;
     const username = Cookies.get('username');
     axios.get(`http://localhost:8080/ig/?ig-url=${url}&username=${username}`, {
       headers: { Authorization: 'Bearer ' + Cookies.get('token') }
     }).then(res => {
-      console.log(res.data)
+      console.log(res.data);
+      setIsLoading(false);
     }).catch(err => {
-      console.log(err)
+      console.log(err);
+      setIsLoading(false);
     });
   }
 
@@ -70,6 +77,7 @@ function App() {
       setLoggedIn(false)
     }
 
+    setIsLoading(true);
 
     axios.get('http://localhost:8080/ig/get-tracked-posts?', {
       headers: { Authorization: 'Bearer ' + Cookies.get('token') },
@@ -79,6 +87,8 @@ function App() {
     }).then(res => {
       console.log(res.data)
       setTrackedPosts(res.data)
+      setSelectedPost(res.data.postShortDTOs[0].shortcode);
+      setIsLoading(false);
     }).catch(err => {
       console.log(err)
     });
@@ -93,9 +103,14 @@ function App() {
 
   return (
     <>
-      <Navbar updatePostFunc={updateSelectedPost} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
+      <Navbar updatePostFunc={updateSelectedPost} isLoading={isLoading} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
       {loggedIn ?
         <>
+          {
+              isLoading ? <div className='loading-overlay'>
+                        <div className='loader'></div>
+              </div> : <></>
+          }
           <div className={isHidden ? 'pop-up hidden' : 'pop-up'}>
             <div className='pop-up-content'>
               <h1>Track a new post</h1>
