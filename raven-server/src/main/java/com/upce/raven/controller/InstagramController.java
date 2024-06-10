@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.*;
 import java.util.concurrent.*;
 
 @RestController
@@ -33,16 +34,26 @@ public class InstagramController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     ResponseEntity getCombinedDetailsOfPost(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "ig-shortcode") String igShortcode) {
-        CombinedPostDetailsDTO data = instagramService.getCombinedSavedPostDetail(igShortcode);
+        try {
+            CombinedPostDetailsDTO data = instagramService.getCombinedSavedPostDetail(igShortcode);
 
-        return ResponseEntity.ok().body(data);
+            return ResponseEntity.ok().body(data);
+        } catch (Exception e) {
+            System.out.printf("Error! %s", e);
+        }
+        return ResponseEntity.status(500).body(null);
     }
 
     @RequestMapping(value = "/get-tracked-posts", method = RequestMethod.GET)
     ResponseEntity getUniquePostsForUser(@RequestHeader(name = "Authorization") String token, @RequestParam(value = "username") String username) {
-        UserTrackedPostsDTO dto = instagramService.getUserTrackedPosts(username);
+        try {
+            UserTrackedPostsDTO dto = instagramService.getUserTrackedPosts(username);
 
-        return ResponseEntity.ok().body(dto);
+            return ResponseEntity.ok().body(dto);
+        } catch (Exception e) {
+            System.out.printf("Error! %s", e);
+        }
+        return ResponseEntity.status(500).body(null);
     }
 
     @RequestMapping(value = "/health", method = RequestMethod.GET)
