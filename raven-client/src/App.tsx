@@ -15,6 +15,8 @@ function App() {
   const [trackedPosts, setTrackedPosts] = useState({} as any);
   const [isHidden, setIsHidden] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [reload, setReload] = useState(true);
+  const [reloadNavbar, setReloadNavbar] = useState(true);
 
   const trackNewPostPopUp = () => {
     setIsHidden(false);
@@ -42,6 +44,7 @@ function App() {
         }
       }).then(res => {
         setTrackedPosts(res.data)
+        setReload(!reload);
         setIsLoading(false);
       }).catch(err => {
         console.log(err)
@@ -63,6 +66,18 @@ function App() {
       headers: { Authorization: 'Bearer ' + Cookies.get('token') }
     }).then(res => {
       console.log(res.data);
+      axios.get('http://localhost:8080/ig/get-tracked-posts?', {
+        headers: { Authorization: 'Bearer ' + Cookies.get('token') },
+        params: {
+          username: Cookies.get('username')
+        }
+      }).then(res => {
+        console.log(res.data)
+        setTrackedPosts(res.data)
+      }).catch(err => {
+        console.log(err)
+      });
+      setReloadNavbar(!reloadNavbar);
       setIsLoading(false);
     }).catch(err => {
       console.log(err);
@@ -103,13 +118,21 @@ function App() {
 
   return (
     <>
-      <Navbar updatePostFunc={updateSelectedPost} isLoading={isLoading} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
+      {reloadNavbar ?
+        <Navbar updatePostFunc={updateSelectedPost} isLoading={isLoading} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
+
+        : <></>}
+      {
+        !reloadNavbar ?
+          <Navbar updatePostFunc={updateSelectedPost} isLoading={isLoading} trackNewPost={trackNewPostPopUp} selectBoxFunc={handleSelectChange} selectedPost={selectedPost} />
+          : <></>
+      }
       {loggedIn ?
         <>
           {
-              isLoading ? <div className='loading-overlay'>
-                        <div className='loader'></div>
-              </div> : <></>
+            isLoading ? <div className='loading-overlay'>
+              <div className='loader'></div>
+            </div> : <></>
           }
           <div className={isHidden ? 'pop-up hidden' : 'pop-up'}>
             <div className='pop-up-content'>
@@ -122,7 +145,14 @@ function App() {
               </div>
             </div>
           </div>
-          <Main selectedPost={selectedPost} />
+          <div>
+            {reload ? <Main selectedPost={selectedPost} />
+              : <></>}
+            {
+              !reload ? <Main selectedPost={selectedPost} />
+                : <></>
+            }
+          </div>
         </>
         :
         <>
